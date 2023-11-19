@@ -22,6 +22,8 @@ jobs:
         - "1.7.2"
         packages:
         - "dbt-bigquery"
+        base:
+        - python:3.10.7-slim-bullseye
         include:
         - packages: "dbt-bigquery"
           flavor: "-bigquery"
@@ -83,6 +85,7 @@ jobs:
       with:
         context: .
         build-args: |
+          base=${{ matrix.base }}
           version=${{ matrix.version }}
           packages=${{ matrix.packages }}
         push: true
