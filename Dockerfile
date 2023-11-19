@@ -4,8 +4,8 @@ ARG         base=python:3.10.7-slim-bullseye
 
 FROM        ${base} as dbt
 
-ARG         dbt_core=1.7.2
-ARG         dbt_bigquery=1.7.2
+ARG         dbt_core
+ARG         dbt_bigquery
 
 RUN         apt-get update && \
             apt-get install -y --no-install-recommends \
