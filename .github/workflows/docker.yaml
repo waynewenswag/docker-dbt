@@ -16,9 +16,9 @@ jobs:
       fail-fast: false
       matrix:
         version:
-        - ""
+        - "1.7.2"
         include:
-        - version: ""
+        - version: "1.7.2"
           latest: true
 
     steps:
@@ -77,7 +77,8 @@ jobs:
       with:
         context: .
         build-args: |
-          version=${{ matrix.version }}
+          dbt_core=${{ matrix.version }}
+          dbt_bigquery=${{ matrix.version }}
         push: true
         platforms: ${{ steps.qemu.outputs.platforms }}
         labels: ${{ steps.meta.outputs.labels }}
