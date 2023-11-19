@@ -17,6 +17,8 @@ jobs:
       matrix:
         version:
         - "1.7.2"
+        platforms:
+        - "linux/amd64,linux/arm64,linux/arm64/v8"
         include:
         - version: "1.7.2"
           latest: true
@@ -80,7 +82,7 @@ jobs:
           dbt_core=${{ matrix.version }}
           dbt_bigquery=${{ matrix.version }}
         push: true
-        platforms: ${{ steps.qemu.outputs.platforms }}
+        platforms: ${{ matrix.platforms || env.PLATFORMS || 'linux/amd64' }}
         labels: ${{ steps.meta.outputs.labels }}
         tags: ${{ steps.meta.outputs.tags }}
         cache-from: type=gha
