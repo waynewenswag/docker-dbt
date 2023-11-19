@@ -24,7 +24,7 @@ jobs:
         include:
         - version: "1.7.2"
           packages: "dbt-bigquery"
-          flavor: "bigquery"
+          flavor: "-bigquery"
 
     steps:
     - name: Checkout
