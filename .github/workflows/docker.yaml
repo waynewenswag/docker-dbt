@@ -12,6 +12,9 @@ jobs:
       contents: read
       packages: write
 
+    env:
+      platforms: "linux/amd64,linux/arm64,linux/arm64/v8"
+
     strategy:
       fail-fast: false
       matrix:
@@ -19,8 +22,6 @@ jobs:
         - "1.7.2"
         packages:
         - "dbt-biguery"
-        platforms:
-        - "linux/amd64,linux/arm64,linux/arm64/v8"
         include:
         - version: "1.7.2"
           packages: "dbt-bigquery"
