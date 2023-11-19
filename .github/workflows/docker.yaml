@@ -21,7 +21,7 @@ jobs:
         version:
         - "1.7.2"
         packages:
-        - "dbt-biguery"
+        - "dbt-bigquery"
         include:
         - packages: "dbt-bigquery"
           flavor: "-bigquery"
