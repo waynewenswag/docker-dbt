@@ -85,6 +85,7 @@ jobs:
         context: .
         build-args: |
           version=${{ matrix.version }}
+          packages=${{ matrix.packages }}
         push: true
         platforms: ${{ matrix.platforms || env.PLATFORMS || 'linux/amd64' }}
         labels: ${{ steps.meta.outputs.labels }}
