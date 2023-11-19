@@ -17,10 +17,14 @@ jobs:
       matrix:
         version:
         - "1.7.2"
+        packages:
+        - "dbt-biguery"
         platforms:
         - "linux/amd64,linux/arm64,linux/arm64/v8"
         include:
         - version: "1.7.2"
+          packages: "dbt-bigquery"
+          flavor: "bigquery"
 
     steps:
     - name: Checkout
@@ -68,6 +72,7 @@ jobs:
           ghcr.io/${{ steps.config.outputs.image-owner }}/${{ steps.config.outputs.image-name }}
         flavor: |-
           latest=${{ !!matrix.latest }}
+          suffix=${{ matrix.flavor }}
         tags: |-
           type=semver,pattern={{major}}.{{minor}},value=${{ matrix.version }}
           type=semver,pattern={{major}}.{{minor}}.{{patch}},value=${{ matrix.version }}
