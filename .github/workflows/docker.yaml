@@ -27,11 +27,11 @@ jobs:
         - python:3.12.0-slim-bookworm
         include:
         - packages: "dbt-bigquery"
-          flavor-packages: "-bigquery"
+          flavor-packages: "bigquery"
         - base: python:3.10.7-slim-bullseye
-          flavor-os: -py3.10-bullseye
+          flavor-os: py3.10-bullseye
         - base: python:3.12.0-slim-bookworm
-          flavor-os: -py3.11-bookworm
+          flavor-os: py3.11-bookworm
 
     steps:
     - name: Checkout
@@ -80,10 +80,10 @@ jobs:
         flavor: |-
           latest=${{ !!matrix.latest }}
         tags: |-
-          type=semver,pattern={{major}}.{{minor}},value=${{ matrix.version }},suffix=${{ matrix.flavor-packages }},enable=${{ !!matrix.flavor-packages }}
-          type=semver,pattern={{major}}.{{minor}}.{{patch}},value=${{ matrix.version }},suffix=${{ matrix.flavor-packages }},enable=${{ !!matrix.flavor-packages }}
-          type=semver,pattern={{major}}.{{minor}},value=${{ matrix.version }},suffix=${{ matrix.flavor-packages }}-${{ matrix.flavor-os }},enable=${{ !!matrix.flavor-packages && !!matrix.flavor-os }}
-          type=semver,pattern={{major}}.{{minor}}.{{patch}},value=${{ matrix.version }},suffix=${{ matrix.flavor-packages }}-${{ matrix.flavor-os }},enable=${{ !!matrix.flavor-packages && !!matrix.flavor-os }}
+          type=semver,pattern={{major}}.{{minor}},value=${{ matrix.version }},suffix=-${{ matrix.flavor-packages }},enable=${{ !!matrix.flavor-packages }}
+          type=semver,pattern={{major}}.{{minor}}.{{patch}},value=${{ matrix.version }},suffix=-${{ matrix.flavor-packages }},enable=${{ !!matrix.flavor-packages }}
+          type=semver,pattern={{major}}.{{minor}},value=${{ matrix.version }},suffix=-${{ matrix.flavor-packages }}-${{ matrix.flavor-os }},enable=${{ !!matrix.flavor-packages && !!matrix.flavor-os }}
+          type=semver,pattern={{major}}.{{minor}}.{{patch}},value=${{ matrix.version }},suffix=-${{ matrix.flavor-packages }}-${{ matrix.flavor-os }},enable=${{ !!matrix.flavor-packages && !!matrix.flavor-os }}
 
     - name: Build
       uses: docker/build-push-action@v5
