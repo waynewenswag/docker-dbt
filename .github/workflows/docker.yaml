@@ -32,6 +32,8 @@ jobs:
           flavor-os: py3.10-bullseye
         - base: python:3.12.0-slim-bookworm
           flavor-os: py3.11-bookworm
+        - flavor-os: py3.11-bookworm
+          flavor-os-latest: true
 
     steps:
     - name: Checkout
@@ -80,8 +82,8 @@ jobs:
         flavor: |-
           latest=${{ !!matrix.latest }}
         tags: |-
-          type=semver,pattern={{major}}.{{minor}},value=${{ matrix.version }},suffix=-${{ matrix.flavor-packages }},enable=${{ !!matrix.flavor-packages }}
-          type=semver,pattern={{major}}.{{minor}}.{{patch}},value=${{ matrix.version }},suffix=-${{ matrix.flavor-packages }},enable=${{ !!matrix.flavor-packages }}
+          type=semver,pattern={{major}}.{{minor}},value=${{ matrix.version }},suffix=-${{ matrix.flavor-packages }},enable=${{ !!matrix.flavor-packages && !!matrix.flavor-os-latest }}
+          type=semver,pattern={{major}}.{{minor}}.{{patch}},value=${{ matrix.version }},suffix=-${{ matrix.flavor-packages }},enable=${{ !!matrix.flavor-packages && !!matrix.flavor-os-latest }}
           type=semver,pattern={{major}}.{{minor}},value=${{ matrix.version }},suffix=-${{ matrix.flavor-packages }}-${{ matrix.flavor-os }},enable=${{ !!matrix.flavor-packages && !!matrix.flavor-os }}
           type=semver,pattern={{major}}.{{minor}}.{{patch}},value=${{ matrix.version }},suffix=-${{ matrix.flavor-packages }}-${{ matrix.flavor-os }},enable=${{ !!matrix.flavor-packages && !!matrix.flavor-os }}
 
