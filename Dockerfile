@@ -1,4 +1,4 @@
-ARG         base=python:3.10.7-slim-bullseye
+ARG         base=python:3.12.0-slim-bookworm
 
 ###
 
