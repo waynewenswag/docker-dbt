@@ -6,7 +6,7 @@ FROM        ${base} as dbt
 
 ARG         core_version=
 ARG         bigquery_version=
-ARG         clickhosue_version=
+ARG         clickhouse_version=
 
 RUN         apt-get update && \
             apt-get install -y --no-install-recommends \
