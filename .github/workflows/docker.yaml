@@ -18,22 +18,15 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        package:
-        - dbt-bigquery
-        - dbt-clickhouse
         base:
         - python:3.10.7-slim-bullseye
         - python:3.11.6-slim-bookworm
         - python:3.12.0-slim-bookworm
         include:
-        - package: dbt-bigquery
-          package_version: 1.7.2
-          core_version: 1.7.2
-          flavor-package: bigquery
-        - package: dbt-clickhouse
-          package_version: 1.7.1
-          core_version: 1.7.4
-          flavor-package: clickhouse
+        - image_version: 1.0.0
+          bigquery_version: 1.7.3
+          clickhouse_version: 1.7.1
+          core_version: 1.7.6
         - base: python:3.10.7-slim-bullseye
           flavor-os: py3.10-bullseye
         - base: python:3.11.6-slim-bookworm
@@ -44,6 +37,7 @@ jobs:
           flavor-os-latest: true
 
     steps:
+
     - name: Checkout
       uses: actions/checkout@v4
 
@@ -90,10 +84,10 @@ jobs:
         flavor: |-
           latest=${{ !!matrix.latest }}
         tags: |-
-          type=semver,pattern={{major}}.{{minor}},value=${{ matrix.package_version }},suffix=-${{ matrix.flavor-package }},enable=${{ !!matrix.flavor-package && !!matrix.flavor-os-latest }}
-          type=semver,pattern={{major}}.{{minor}}.{{patch}},value=${{ matrix.package_version }},suffix=-${{ matrix.flavor-package }},enable=${{ !!matrix.flavor-package && !!matrix.flavor-os-latest }}
-          type=semver,pattern={{major}}.{{minor}},value=${{ matrix.package_version }},suffix=-${{ matrix.flavor-package }}-${{ matrix.flavor-os }},enable=${{ !!matrix.flavor-package && !!matrix.flavor-os }}
-          type=semver,pattern={{major}}.{{minor}}.{{patch}},value=${{ matrix.package_version }},suffix=-${{ matrix.flavor-package }}-${{ matrix.flavor-os }},enable=${{ !!matrix.flavor-package && !!matrix.flavor-os }}
+          type=semver,pattern={{major}}.{{minor}},value=${{ matrix.image_version }},enable=${{ !!matrix.flavor-os-latest }}
+          type=semver,pattern={{major}}.{{minor}}.{{patch}},value=${{ matrix.image_version }},enable=${{ !!matrix.flavor-os-latest }}
+          type=semver,pattern={{major}}.{{minor}},value=${{ matrix.image_version }},suffix=-${{ matrix.flavor-os }},enable=${{ !!matrix.flavor-os }}
+          type=semver,pattern={{major}}.{{minor}}.{{patch}},value=${{ matrix.image_version }},suffix=-${{ matrix.flavor-os }},enable=${{ !!matrix.flavor-os }}
 
     - name: Build
       uses: docker/build-push-action@v5
@@ -103,8 +97,8 @@ jobs:
         build-args: |
           base=${{ matrix.base }}
           core_version=${{ matrix.core_version }}
-          package=${{ matrix.package }}
-          package_version=${{ matrix.package_version }}
+          bigquery_version=${{ matrix.bigquery_version }}
+          clickhouse_version=${{ matrix.clickhouse_version }}
         push: true
         platforms: ${{ matrix.platforms || env.PLATFORMS || 'linux/amd64' }}
         labels: ${{ steps.meta.outputs.labels }}

@@ -4,9 +4,9 @@ ARG         base=python:3.12.0-slim-bookworm
 
 FROM        ${base} as dbt
 
-ARG         package=
-ARG         package_version=
 ARG         core_version=
+ARG         bigquery_version=
+ARG         clickhosue_version=
 
 RUN         apt-get update && \
             apt-get install -y --no-install-recommends \
@@ -15,8 +15,9 @@ RUN         apt-get update && \
                 ca-certificates
 
 RUN         pip install \
-                dbt-core==${core_version} \
-                ${package}==${package_version}
+                dbt-core==${ core_version } \
+                dbt-bigquery==${ bigquery_version } \
+                dbt-clickhouse==${ clickhouse_version }
 
 ###
 
