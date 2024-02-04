@@ -4,9 +4,9 @@ ARG         base=
 
 FROM        ${base} as dbt
 
-ARG         package=
-ARG         package_version=
-ARG         core_version=
+ARG         version=
+ARG         extras=
+
 
 RUN         apt-get update && \
             apt-get install -y --no-install-recommends \
@@ -15,8 +15,8 @@ RUN         apt-get update && \
                 ca-certificates
 
 RUN         pip install \
-                dbt-core==${core_version} \
-                ${package}==${package_version}
+                dbt-core==${version} \
+                ${extras}
 
 ###
 
@@ -27,5 +27,6 @@ ENV         LANG=C.UTF-8
 
 WORKDIR     /usr/app/dbt/
 ENTRYPOINT  ["dbt"]
+CMD         ["-v"]
 
 COPY        --from=dbt /usr/local/ /usr/local/
