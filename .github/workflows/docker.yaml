@@ -22,7 +22,6 @@ jobs:
         - dbt-bigquery
         - dbt-clickhouse
         base:
-        - python:3.10.7-slim-bullseye
         - python:3.11.6-slim-bookworm
         - python:3.12.0-slim-bookworm
         include:
@@ -34,8 +33,6 @@ jobs:
           package_version: 1.7.1
           core_version: 1.7.4
           flavor-package: clickhouse
-        - base: python:3.10.7-slim-bullseye
-          flavor-os: py3.10-bullseye
         - base: python:3.11.6-slim-bookworm
           flavor-os: py3.11-bookworm
         - base: python:3.12.0-slim-bookworm
