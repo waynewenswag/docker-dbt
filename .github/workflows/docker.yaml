@@ -18,7 +18,7 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        verison:
+        version:
         - "1.7.2"
         - "1.7.4"
         extras:
@@ -58,7 +58,7 @@ jobs:
       id: qemu
       uses: docker/setup-qemu-action@v3
       with:
-        platforms: ${{ matrix.platforms || env.PLATFORMS || 'linux/amd64' }}
+        platforms: ${{ env.PLATFORMS }}
 
     - name: Setup - Docker buildx
       uses: docker/setup-buildx-action@v3
@@ -84,10 +84,10 @@ jobs:
           ${{ steps.config.outputs.image-owner }}/${{ steps.config.outputs.image-name }}
           ghcr.io/${{ steps.config.outputs.image-owner }}/${{ steps.config.outputs.image-name }}
         tags: |-
-          type=semver,pattern={{major}}.{{minor}},value=${{ matrix.verison }},suffix=-${{ matrix.extras-name }}-${{ matrix.base-name }}
-          type=semver,pattern={{major}}.{{minor}}.{{patch}},value=${{ matrix.verison }},suffix=-${{ matrix.extras-name }}-${{ matrix.base-name }}
-          type=semver,pattern={{major}}.{{minor}},value=${{ matrix.verison }},suffix=-${{ matrix.extras-name }}-${{ matrix.base-name }},enable=${{ !!matrix.base-latest }}
-          type=semver,pattern={{major}}.{{minor}}.{{patch}},value=${{ matrix.verison }},suffix=-${{ matrix.extras-name }}-${{ matrix.base-name }},enable=${{ !!matrix.base-latest }}
+          type=semver,pattern={{major}}.{{minor}},value=${{ matrix.version }},suffix=-${{ matrix.extras-name }}-${{ matrix.base-name }}
+          type=semver,pattern={{major}}.{{minor}}.{{patch}},value=${{ matrix.version }},suffix=-${{ matrix.extras-name }}-${{ matrix.base-name }}
+          type=semver,pattern={{major}}.{{minor}},value=${{ matrix.version }},suffix=-${{ matrix.extras-name }}-${{ matrix.base-name }},enable=${{ !!matrix.base-latest }}
+          type=semver,pattern={{major}}.{{minor}}.{{patch}},value=${{ matrix.version }},suffix=-${{ matrix.extras-name }}-${{ matrix.base-name }},enable=${{ !!matrix.base-latest }}
 
     - name: Build
       uses: docker/build-push-action@v5
@@ -99,7 +99,7 @@ jobs:
           version=${{ matrix.version }}
           extras=${{ matrix.extras }}
         push: true
-        platforms: ${{ matrix.platforms || env.PLATFORMS || 'linux/amd64' }}
+        platforms: ${{ env.PLATFORMS }}
         labels: ${{ steps.meta.outputs.labels }}
         tags: ${{ steps.meta.outputs.tags }}
         cache-from: type=gha
