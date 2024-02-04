@@ -7,7 +7,6 @@ FROM        ${base} as dbt
 ARG         version=
 ARG         extras=
 
-
 RUN         apt-get update && \
             apt-get install -y --no-install-recommends \
                 make \
