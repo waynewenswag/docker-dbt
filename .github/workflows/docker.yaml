@@ -44,14 +44,16 @@ jobs:
 
     - name: Configure
       id: config
+      env:
+        GITHUB_REPOSITORY_NAME: ${{ github.event.repository.name }}
       run: |-
         NPROC=$(nproc)
 
         echo "NPROC=$((NPROC*2+1))" >> $GITHUB_ENV
         echo "NPROC=$((NPROC*2+1))" >> $GITHUB_OUTPUT
 
-        echo "image-owner=${{ github.repository_owner }}" >> $GITHUB_OUTPUT
-        echo "image-name=${GITHUB_REPOSITORY#*/docker-}" >> $GITHUB_OUTPUT
+        echo "image-owner=${GITHUB_REPOSITORY_OWNER}" >> $GITHUB_OUTPUT
+        echo "image-name=${GITHUB_REPOSITORY_NAME#docker-}" >> $GITHUB_OUTPUT
 
     - name: Setup - QEMU
       id: qemu
