@@ -11,7 +11,8 @@ RUN         apt-get update && \
             apt-get install -y --no-install-recommends \
                 make \
                 build-essential \
-                ca-certificates
+                ca-certificates \
+                git
 
 RUN         pip install \
                 dbt-core==${version} \
@@ -29,3 +30,5 @@ ENTRYPOINT  ["dbt"]
 CMD         ["-v"]
 
 COPY        --from=dbt /usr/local/ /usr/local/
+RUN         apt-get update && \
+            apt-get install -y --no-install-recommends git
