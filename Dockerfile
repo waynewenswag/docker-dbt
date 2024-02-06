@@ -29,6 +29,7 @@ WORKDIR     /usr/app/dbt/
 ENTRYPOINT  ["dbt"]
 CMD         ["-v"]
 
-COPY        --from=dbt /usr/local/ /usr/local/
 RUN         apt-get update && \
             apt-get install -y --no-install-recommends git
+
+COPY        --from=dbt /usr/local/ /usr/local/
