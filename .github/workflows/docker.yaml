@@ -24,18 +24,18 @@ jobs:
         - dbt-bigquery==1.7.4
         - dbt-clickhouse==1.7.2
         base:
-        - python:3.11.7-slim-bookworm
-        - python:3.12.1-slim-bookworm
+        - python:3.11.8-slim-bookworm
+        - python:3.12.2-slim-bookworm
         include:
         - extras: dbt-bigquery==1.7.4
           extras-name: bigquery
         - extras: dbt-clickhouse==1.7.2
           extras-name: clickhouse
-        - base: python:3.11.7-slim-bookworm
+        - base: python:3.11.8-slim-bookworm
           base-name: py3.11-bookworm
-        - base: python:3.12.1-slim-bookworm
+        - base: python:3.12.2-slim-bookworm
           base-name: py3.12-bookworm
-        - base: python:3.12.1-slim-bookworm
+        - base: python:3.12.2-slim-bookworm
           is-latest-base: true
 
     steps:
