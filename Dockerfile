@@ -5,7 +5,8 @@ ARG         base=
 FROM        ${base} as dbt
 
 ARG         version=
-ARG         extras=
+ARG         bq_version=
+ARG         ch_version=
 
 RUN         apt-get update && \
             apt-get install -y --no-install-recommends \
@@ -15,6 +16,8 @@ RUN         apt-get update && \
 
 RUN         pip install \
                 dbt-core==${version} \
+                dbt-bigquery==${bq_version} \
+                dbt-clickhouse==${ch_version} \
                 ${extras}
 
 ###

@@ -20,22 +20,18 @@ jobs:
       matrix:
         version:
         - "1.7.8"
-        extras:
-        - dbt-bigquery==1.7.4
-        - dbt-clickhouse==1.7.2
+        bq_version:
+        - "1.7.4"
+        ch_version:
+        - "1.7.2"
         base:
         - python:3.11.8-slim-bookworm
         - python:3.12.2-slim-bookworm
         include:
-        - extras: dbt-bigquery==1.7.4
-          extras-name: bigquery
-        - extras: dbt-clickhouse==1.7.2
-          extras-name: clickhouse
         - base: python:3.11.8-slim-bookworm
           base-name: py3.11-bookworm
         - base: python:3.12.2-slim-bookworm
           base-name: py3.12-bookworm
-        - base: python:3.12.2-slim-bookworm
           is-latest-base: true
 
     steps:
@@ -87,10 +83,10 @@ jobs:
         flavor:
           latest=false
         tags: |-
-          type=semver,pattern={{major}}.{{minor}},value=${{ matrix.version }},suffix=-${{ matrix.extras-name }}-${{ matrix.base-name }}
-          type=semver,pattern={{major}}.{{minor}}.{{patch}},value=${{ matrix.version }},suffix=-${{ matrix.extras-name }}-${{ matrix.base-name }}
-          type=semver,pattern={{major}}.{{minor}},value=${{ matrix.version }},suffix=-${{ matrix.extras-name }},enable=${{ !!matrix.is-latest-base }}
-          type=semver,pattern={{major}}.{{minor}}.{{patch}},value=${{ matrix.version }},suffix=-${{ matrix.extras-name }},enable=${{ !!matrix.is-latest-base }}
+          type=semver,pattern={{major}}.{{minor}},value=${{ matrix.version }},suffix=-${{ matrix.base-name }}
+          type=semver,pattern={{major}}.{{minor}}.{{patch}},value=${{ matrix.version }},suffix=-${{ matrix.base-name }}
+          type=semver,pattern={{major}}.{{minor}},value=${{ matrix.version }}
+          type=semver,pattern={{major}}.{{minor}}.{{patch}},value=${{ matrix.version }}
 
     - name: Build
       uses: docker/build-push-action@v5
@@ -100,7 +96,8 @@ jobs:
         build-args: |
           base=${{ matrix.base }}
           version=${{ matrix.version }}
-          extras=${{ matrix.extras }}
+          bq_version=${{ matrix.bq_version }}
+          ch_version=${{ matrix.ch_version }}
         push: true
         platforms: ${{ env.PLATFORMS }}
         labels: ${{ steps.meta.outputs.labels }}
