@@ -27,7 +27,7 @@ jobs:
         - python:3.11.8-slim-bookworm
         - python:3.12.2-slim-bookworm
         include:
-        - extras: dbt-bigquery==1.7.4
+        - extras: dbt-bigquery==1.7.6
           extras-name: bigquery
         - extras: dbt-clickhouse==1.7.2
           extras-name: clickhouse
