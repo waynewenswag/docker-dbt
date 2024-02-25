@@ -47,6 +47,9 @@ jobs:
       uses: actions/github-script@v7
       env:
         GITHUB_REPOSITORY_NAME: ${{ github.event.repository.name }}
+        INPUT_MATRIX_EXTRAS_NAME: ${{ matrix.extras-name }}
+        INPUT_MATRIX_BASE_NAME: ${{ matrix.base-name }}
+        INPUT_MATRIX_IS_LATEST_BASE: ${{ matrix.is-latest-base }}
       with:
         script: |
           const os = require('os')
@@ -56,6 +59,23 @@ jobs:
 
           core.setOutput('image-owner', process.env.GITHUB_REPOSITORY_OWNER)
           core.setOutput('image-name', process.env.GITHUB_REPOSITORY_NAME.replace(/^docker-/, ''))
+
+          const inputs = {
+            extrasName: core.getInput('MATRIX_EXTRAS_NAME'),
+            baseName: core.getInput('MATRIX_BASE_NAME'),
+          }
+          // Mark `all` as default
+          if (inputs.extrasName === 'all') {
+            inputs.extrasName = null
+          }
+          // Mark `latest` as default
+          if (core.getBooleanInput('MATRIX_IS_LATEST_BASE')) {
+            baseName = null
+          }
+
+          core.setOutput(
+            'docker-image-tag-suffix', Object.values(inputs).filter(Boolean).map(x => `-${x}`).join(''),
+          );
 
     - name: Setup - QEMU
       id: qemu
@@ -89,10 +109,8 @@ jobs:
         flavor:
           latest=false
         tags: |-
-          type=semver,pattern={{major}}.{{minor}},value=${{ matrix.version }},suffix=-${{ matrix.extras-name }}-${{ matrix.base-name }}
-          type=semver,pattern={{major}}.{{minor}}.{{patch}},value=${{ matrix.version }},suffix=-${{ matrix.extras-name }}-${{ matrix.base-name }}
-          type=semver,pattern={{major}}.{{minor}},value=${{ matrix.version }},suffix=-${{ matrix.extras-name }},enable=${{ !!matrix.is-latest-base }}
-          type=semver,pattern={{major}}.{{minor}}.{{patch}},value=${{ matrix.version }},suffix=-${{ matrix.extras-name }},enable=${{ !!matrix.is-latest-base }}
+          type=semver,pattern={{major}}.{{minor}},value=${{ matrix.version }},suffix=${{ steps.config.outputs.docker-image-tag-suffix }}
+          type=semver,pattern={{major}}.{{minor}}.{{patch}},value=${{ matrix.version }},suffix=${{ steps.config.outputs.docker-image-tag-suffix }}
 
     - name: Build
       uses: docker/build-push-action@v5
