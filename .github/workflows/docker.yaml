@@ -49,7 +49,7 @@ jobs:
         GITHUB_REPOSITORY_NAME: ${{ github.event.repository.name }}
         INPUT_MATRIX_EXTRAS_NAME: ${{ matrix.extras-name }}
         INPUT_MATRIX_BASE_NAME: ${{ matrix.base-name }}
-        INPUT_MATRIX_IS_LATEST_BASE: ${{ matrix.is-latest-base }}
+        INPUT_MATRIX_IS_LATEST_BASE: ${{ !!matrix.is-latest-base }}
       with:
         script: |
           const os = require('os')
