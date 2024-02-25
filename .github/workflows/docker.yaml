@@ -44,16 +44,18 @@ jobs:
 
     - name: Configure
       id: config
+      uses: actions/github-script@v7
       env:
         GITHUB_REPOSITORY_NAME: ${{ github.event.repository.name }}
-      run: |-
-        NPROC=$(nproc)
+      with:
+        script: |
+          const os = require('os')
 
-        echo "NPROC=$((NPROC*2+1))" >> $GITHUB_ENV
-        echo "NPROC=$((NPROC*2+1))" >> $GITHUB_OUTPUT
+          core.exportVariable('NPROC', os.cpus().length * 2)
+          core.setOutput('NPROC', os.cpus().length * 2)
 
-        echo "image-owner=${GITHUB_REPOSITORY_OWNER}" >> $GITHUB_OUTPUT
-        echo "image-name=${GITHUB_REPOSITORY_NAME#docker-}" >> $GITHUB_OUTPUT
+          core.setOutput('image-owner', process.env.GITHUB_REPOSITORY_OWNER)
+          core.setOutput('image-name', process.env.GITHUB_REPOSITORY_NAME.replace(/^docker-/, ''))
 
     - name: Setup - QEMU
       id: qemu
