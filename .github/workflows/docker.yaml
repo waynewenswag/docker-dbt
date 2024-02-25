@@ -64,10 +64,12 @@ jobs:
             extrasName: core.getInput('MATRIX_EXTRAS_NAME'),
             baseName: core.getInput('MATRIX_BASE_NAME'),
           }
+
           // Mark `all` as default
           if (inputs.extrasName === 'all') {
             inputs.extrasName = null
           }
+
           // Mark `latest` as default
           if (core.getBooleanInput('MATRIX_IS_LATEST_BASE')) {
             baseName = null
