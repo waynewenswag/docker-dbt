@@ -19,20 +19,20 @@ jobs:
       fail-fast: false
       matrix:
         version:
-        - "1.7.8"
+        - "1.7.9"
         extras:
-        - dbt-bigquery==1.7.6 dbt-clickhouse==1.7.2
+        - dbt-bigquery==1.7.6 dbt-clickhouse==1.7.6
         - dbt-bigquery==1.7.6
-        - dbt-clickhouse==1.7.2
+        - dbt-clickhouse==1.7.6
         base:
         - python:3.11.8-slim-bookworm
         - python:3.12.2-slim-bookworm
         include:
-        - extras: dbt-bigquery==1.7.6 dbt-clickhouse==1.7.2
+        - extras: dbt-bigquery==1.7.6 dbt-clickhouse==1.7.6
           extras-name: all
         - extras: dbt-bigquery==1.7.6
           extras-name: bigquery
-        - extras: dbt-clickhouse==1.7.2
+        - extras: dbt-clickhouse==1.7.6
           extras-name: clickhouse
         - base: python:3.11.8-slim-bookworm
           base-name: py3.11-bookworm
